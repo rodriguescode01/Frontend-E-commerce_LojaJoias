@@ -1,9 +1,9 @@
 <template>
     <div>
         <Navbar />
-        <!--<Banner />
+        <Banner />
         <Categoria />
-        <ProdutosCarrosel />
+        <!--<ProdutosCarrosel />
         <Beneficios />
         <Footer />-->
     </div>
