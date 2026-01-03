@@ -1,6 +1,6 @@
 <!-- Seleção onde ficara o Banner-->
 <template>
-    <section class="banner">
+    <section class="banner" ref="banner">
         <div class="banner-overlay"></div>
 
         <div class="banner-content">
@@ -23,8 +23,22 @@
 <script>
 export default {
     name: "Banner",
+    mounted() {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("is-visible");
+                    observer.disconnect();
+                }
+            },
+            { threshold: 0.3 }
+        );
+
+        observer.observe(this.$refs.banner);
+    }
 };
 </script>
+
 
 <style scoped>
 .banner {
@@ -90,5 +104,17 @@ export default {
     color: #ffffff;
     transform: translateY(-3px);
 }
+
+.banner {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.9s ease;
+}
+
+.banner.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 </style>
 

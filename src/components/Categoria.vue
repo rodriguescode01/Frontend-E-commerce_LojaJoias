@@ -1,50 +1,63 @@
 <template>
-    <section class="categoria" id="cate">
+    <section class="categoria" id="cate" ref="categoria">
         <div class="categoria-header">
             <h2>Nossas Categorias</h2>
             <p>Encontre aqui anéis, colares e pulseiras</p>
         </div>
 
         <div class="categoria-cards">
-        <!-- Card 1 -->
-        <div class="card">
-            <img
-            src="@/assets/images/categoriaAneis.png"
-            alt="Anéis"
-            />
-            <button class="card-btn">Anéis</button>
-        </div>
+            <!-- Card 1 -->
+            <div class="card">
+                <img
+                src="@/assets/images/categoriaAneis.png"
+                alt="Anéis"
+                />
+                <button class="card-btn">Anéis</button>
+            </div>
 
-        <!-- Card 2 -->
-        <div class="card">
-            <img
-            src="@/assets/images/categoriaColar.png"
-            alt="Colares"
-            />
-            <button class="card-btn">Colares</button>
-        </div>
+            <!-- Card 2 -->
+            <div class="card">
+                <img
+                src="@/assets/images/categoriaColar.png"
+                alt="Colares"
+                />
+                <button class="card-btn">Colares</button>
+            </div>
 
-        <!-- Card 3 -->
-        <div class="card">
-            <img
-            src="@/assets/images/categoriaPulseira.png"
-            alt="Pulseiras"
-            />
-            <button class="card-btn">Pulseiras</button>
-        </div>
+            <!-- Card 3 -->
+            <div class="card">
+                <img
+                src="@/assets/images/categoriaPulseira.png"
+                alt="Pulseiras"
+                />
+                <button class="card-btn">Pulseiras</button>
+            </div>
         </div>
     </section>
 </template>
 
-
 <script>
 export default {
     name: "Categoria",
+    mounted() {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("is-visible");
+                    observer.disconnect();
+                }
+            },
+            { threshold: 0.25 }
+        );
+
+        observer.observe(this.$refs.categoria);
+    }
 };
 </script>
 
+
 <style scoped>
-/* Seção */
+
 .categoria {
     padding: 80px 64px;
     background-color: #ffffff;
@@ -81,7 +94,6 @@ export default {
     transition: transform 0.4s ease;
 }
 
-/* Imagem */
 .card img {
     width: 100%;
     height: 100%;
@@ -89,7 +101,6 @@ export default {
     transition: transform 0.5s ease;
 }
 
-/* Hover efeito */
 .card:hover img {
     transform: scale(1.08);
 }
@@ -115,4 +126,17 @@ export default {
     background-color: #000;
     color: #fff;
 }
+
+.categoria {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.9s ease;
+}
+
+.categoria.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
 </style>

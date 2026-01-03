@@ -1,5 +1,5 @@
 <template>
-    <header class="header">
+    <header class="header" :class="{ scrolled: isScrolled }">
 
         <!-- LOGO -->
         <div class="header-logo">
@@ -31,7 +31,6 @@
 
             <!-- Login / Carrinho -->
             <div class="nav-login">
-
                 <a href="#">Login</a>
                 <span>|</span>
                 <a href="#">Cadastre-se</a>
@@ -45,12 +44,29 @@
     </header>
 </template>
 
-
 <script>
 export default {
-    name: 'Navbar'
+    name: 'Navbar',
+    data() {
+        return {
+            isScrolled: false
+        }
+    },
+    mounted() {
+        window.addEventListener("scroll", this.handleScroll);
+    },
+    beforeUnmount() {
+        window.removeEventListener("scroll", this.handleScroll);
+    },
+    methods: {
+        handleScroll() {
+            this.isScrolled = window.scrollY > 80;
+        }
+    }
 }
 </script>
+
+
 
 <style scoped>
 .header {
@@ -59,18 +75,27 @@ export default {
     position: sticky;
     top: 0;
     z-index: 100;
+    transition: all 0.4s ease;
 }
 
 .header-logo {
     display: flex;
     justify-content: center;
     padding: 20px 0 10px;
+
+    max-height: 140px;
+    overflow: hidden;
+
+    transition: 
+        opacity 0.3s ease,
+        transform 0.3s ease,
+        max-height 0.3s ease;
 }
+
 
 .logo {
     height: 110px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
+    transition: all 0.4s ease;
 }
 
 .logo:hover {
@@ -82,7 +107,23 @@ export default {
     grid-template-columns: auto 1fr auto;
     align-items: center;
     padding: 12px 64px 20px;
-    margin-bottom: 100px;
+    transition: padding 0.3s ease;
+}
+
+
+/**CSS do Scroll */
+header.scrolled .header-logo {
+    opacity: 0;
+    transform: scale(0.9);
+    pointer-events: none;
+}
+
+.header.scrolled .logo {
+    height: 0;
+}
+
+.header.scrolled .navbar {
+    transform: translateY(-6px);
 }
 
 .nav-menu {
@@ -204,6 +245,31 @@ export default {
 .btn-carrinho:active {
     transform: scale(0.9);
 }
+
+/* Quando scrollar */
+header.scrolled {
+    background-color: #ffffffcc;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+header .header-logo {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Ajusta espaçamento quando a logo some */
+.header.scrolled .navbar {
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+/* Animação suave */
+.header,
+.header-logo,
+.navbar {
+    transition: all 0.3s ease;
+}
+
 
 </style>
 

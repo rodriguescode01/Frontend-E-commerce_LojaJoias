@@ -23,3 +23,32 @@ html {
     scroll-behavior: smooth;
     /**Deixa o scroll do mouse suave*/
 }
+
+/*Animacao no site*/
+.page-enter {
+    animation: pageFadeUp 0.8s ease forwards;
+}
+
+@keyframes pageFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/*Animacao nos componentes*/
+.scroll-animate {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s ease;
+}
+
+.scroll-animate.active {
+    opacity: 1;
+    transform: translateY(0);
+}
