@@ -28,7 +28,11 @@
             <div class="grupo-campo">
             <div class="label-com-link">
                 <label>Senha</label>
-                <a href="#" class="link-esqueci">Esqueceu a senha?</a>
+
+                <router-link to="/redefinir" class="link-esqueci">
+                    Esqueceu a senha?
+                </router-link>
+
             </div>
             <div class="campo-senha-container">
                 <input 
