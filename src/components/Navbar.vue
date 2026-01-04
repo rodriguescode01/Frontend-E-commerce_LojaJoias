@@ -31,14 +31,16 @@
 
             <!-- Login / Carrinho -->
             <div class="nav-login">
-                <a href="#">Login</a>
+
+                <button class="btn-login" @click="abrirLogin">
+                    Entrar
+                </button>
+
                 <span>|</span>
-                <a href="#" >Cadastre-se</a>
 
                 <button class="btn-cadastro" @click="abrirCadastro">
                     Cadastre-se
                 </button>
-                
 
                 <button class="btn-carrinho" @click="abrirCarrinho">
                     <img src="../assets/icons/iconCarrinho.png" alt="Carrinho" />
@@ -79,6 +81,12 @@ export default {
 
         abrirCarrinho() {
             this.$refs.carrinhoRef.abrirCarrinho();
+        },
+
+        abrirLogin(){
+            setTimeout(() => {
+                this.$router.push('/login');
+            }, 400);
         },
 
         abrirCadastro(){
@@ -215,13 +223,29 @@ header.scrolled .header-logo {
 }
 
 /* Links */
-.nav-login a,
 .menu-desktop .link a {
     text-decoration: none;
     color: var(--preto);
     font-weight: 600;
     font-size: 15px;
     transition: color 0.3s ease;
+}
+/**TODO - ADICIONAR CSS DO LOGIN */
+.btn-login,
+.btn-cadastro{
+    border: none;
+    background: none;
+    text-decoration: none;
+    color: var(--preto);
+    font-weight: 600;
+    font-size: 15px;
+    transition: color 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-login:hover,
+.btn-cadastro:hover{
+    color: rgb(214,171,41);
 }
 
 /* Hover nos links */
