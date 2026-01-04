@@ -1,5 +1,8 @@
 <template>
-  <Home />
+  <div>
+    <!-- Aqui o Vue Router renderiza a página atual -->
+    <router-view />
+  </div>
 </template>
 
 <script>

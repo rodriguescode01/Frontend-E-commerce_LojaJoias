@@ -33,7 +33,12 @@
             <div class="nav-login">
                 <a href="#">Login</a>
                 <span>|</span>
-                <a href="#">Cadastre-se</a>
+                <a href="#" >Cadastre-se</a>
+
+                <button class="btn-cadastro" @click="abrirCadastro">
+                    Cadastre-se
+                </button>
+                
 
                 <button class="btn-carrinho" @click="abrirCarrinho">
                     <img src="../assets/icons/iconCarrinho.png" alt="Carrinho" />
@@ -74,7 +79,14 @@ export default {
 
         abrirCarrinho() {
             this.$refs.carrinhoRef.abrirCarrinho();
+        },
+
+        abrirCadastro(){
+            setTimeout(() => {
+                this.$router.push('/cadastro');
+            }, 400);
         }
+        
     }
 }
 </script>
@@ -108,9 +120,8 @@ html {
         max-height 0.3s ease;
 }
 
-
 .logo {
-    height: 110px;
+    height: 130px;
     transition: all 0.4s ease;
 }
 
