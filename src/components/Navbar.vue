@@ -35,9 +35,12 @@
                 <span>|</span>
                 <a href="#">Cadastre-se</a>
 
-                <button class="btn-carrinho">
+                <button class="btn-carrinho" @click="abrirCarrinho">
                     <img src="../assets/icons/iconCarrinho.png" alt="Carrinho" />
                 </button>
+
+                <CarrinhoLateral ref="carrinhoRef" />
+
             </div>
 
         </div>
@@ -45,8 +48,14 @@
 </template>
 
 <script>
+import CarrinhoLateral from "../components/CarrinhoLateral.vue";
+
 export default {
     name: 'Navbar',
+    components: {
+        CarrinhoLateral
+    },
+
     data() {
         return {
             isScrolled: false
@@ -61,14 +70,21 @@ export default {
     methods: {
         handleScroll() {
             this.isScrolled = window.scrollY > 80;
+        },
+
+        abrirCarrinho() {
+            this.$refs.carrinhoRef.abrirCarrinho();
         }
     }
 }
 </script>
 
-
-
 <style scoped>
+
+html {
+    scroll-behavior: smooth;
+}
+
 .header {
     background: #ffffff;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
@@ -123,7 +139,7 @@ header.scrolled .header-logo {
 }
 
 .header.scrolled .navbar {
-    transform: translateY(-6px);
+    margin-top: -6px;
 }
 
 .nav-menu {
@@ -264,11 +280,18 @@ header .header-logo {
 }
 
 /* Animação suave */
-.header,
-.header-logo,
-.navbar {
-    transition: all 0.3s ease;
+.header {
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
+
+.header-logo {
+    transition: opacity 0.3s ease, max-height 0.3s ease;
+}
+
+.navbar {
+    transition: padding 0.3s ease;
+}
+
 
 
 </style>

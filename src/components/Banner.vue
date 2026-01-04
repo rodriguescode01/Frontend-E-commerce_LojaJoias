@@ -12,13 +12,12 @@
                 Elegância, brilho e significado em cada detalhe.
             </p>
 
-            <a href="#produtos" class="banner-btn">
+            <a href="#cate" class="banner-btn">
                 Ver Coleção
             </a>
         </div>
     </section>
 </template>
-
 
 <script>
 export default {
