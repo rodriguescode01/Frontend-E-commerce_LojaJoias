@@ -9,94 +9,130 @@
         <!-- NAVBAR -->
         <div class="navbar">
 
-            <!-- Busca -->
-            <div class="nav-search">
-                <select class="search-select">
-                    <option disabled selected>Pesquisar</option>
-                    <option>Anéis</option>
-                    <option>Colares</option>
-                    <option>Pulseiras</option>
-                </select>
-            </div>
+        <!-- Busca -->
+        <div class="nav-search">
+            <select class="search-select">
+            <option disabled selected>Pesquisar</option>
+            <option>Anéis</option>
+            <option>Colares</option>
+            <option>Pulseiras</option>
+            </select>
+        </div>
 
-            <!-- Menu -->
-            <nav class="nav-menu">
-                <ul class="menu-desktop">
-                    <li class="link"><a href="#">Home</a></li>
-                    <li class="link"><a href="#cate">Categorias</a></li>
-                    <li class="link"><a href="#pro">Produtos</a></li>
-                    <li class="link"><a href="#con">Contato</a></li>
-                </ul>
-            </nav>
+        <!-- Menu -->
+        <nav class="nav-menu">
+            <ul class="menu-desktop">
+            <li class="link"><a href="#">Home</a></li>
+            <li class="link"><a href="#cate">Categorias</a></li>
+            <li class="link"><a href="#pro">Produtos</a></li>
+            <li class="link"><a href="#con">Contato</a></li>
+            </ul>
+        </nav>
 
-            <!-- Login / Carrinho -->
-            <div class="nav-login">
+        <!-- Login / Usuário -->
+        <div class="nav-login">
 
-                <button class="btn-login" @click="abrirLogin">
-                    Entrar
-                </button>
+            <!-- NÃO LOGADO -->
+            <template v-if="!auth.logado">
+            <button class="btn-login" @click="abrirLogin">Entrar</button>
+            <span>|</span>
+            <button class="btn-cadastro" @click="abrirCadastro">Cadastre-se</button>
+            </template>
 
+            <!-- LOGADO -->
+            <template v-else>
+            <div class="usuario-menu">
+
+                <span class="minhas-compras">
+                    Minhas Comprar
+                </span>
                 <span>|</span>
+                <span class="usuario-nome" @click="toggleMenu">
+                Olá, {{ auth.usuario.nome }}
+                </span>
 
-                <button class="btn-cadastro" @click="abrirCadastro">
-                    Cadastre-se
-                </button>
-
-                <button class="btn-carrinho" @click="abrirCarrinho">
-                    <img src="../assets/icons/iconCarrinho.png" alt="Carrinho" />
-                </button>
-
-                <CarrinhoLateral ref="carrinhoRef" />
-
+                <div v-if="menuAberto" class="dropdown">
+                <button @click="irPerfil">Meu Perfil</button>
+                <button @click="sair">Sair</button>
+                </div>
             </div>
+            </template>
+
+            <!-- Carrinho -->
+            <button class="btn-carrinho" @click="abrirCarrinho">
+            <img src="../assets/icons/iconCarrinho.png" alt="Carrinho" />
+            </button>
+
+            <CarrinhoLateral ref="carrinhoRef" />
+        </div>
 
         </div>
     </header>
 </template>
 
 <script>
-import CarrinhoLateral from "../components/CarrinhoLateral.vue";
+import CarrinhoLateral from "@/components/CarrinhoLateral.vue";
+import { useAuthStore } from "@/stores/auth";
 
 export default {
-    name: 'Navbar',
+    name: "Navbar",
     components: {
         CarrinhoLateral
     },
 
+    setup() {
+        const auth = useAuthStore();
+        return { auth };
+    },
+
     data() {
         return {
-            isScrolled: false
-        }
+        isScrolled: false,
+        menuAberto: false
+        };
     },
+
     mounted() {
         window.addEventListener("scroll", this.handleScroll);
     },
+
     beforeUnmount() {
         window.removeEventListener("scroll", this.handleScroll);
     },
+
     methods: {
         handleScroll() {
             this.isScrolled = window.scrollY > 80;
+        },
+
+        toggleMenu() {
+            this.menuAberto = !this.menuAberto;
+        },
+
+        sair() {
+            this.auth.logout();
+            this.menuAberto = false;
+            this.$router.push("/");
+        },
+
+        irPerfil() {
+            this.menuAberto = false;
+            this.$router.push("/perfil");
         },
 
         abrirCarrinho() {
             this.$refs.carrinhoRef.abrirCarrinho();
         },
 
-        abrirLogin(){
-            setTimeout(() => {
-                this.$router.push('/login');
-            }, 400);
+        abrirLogin() {
+            this.$router.push("/login");
         },
 
-        abrirCadastro(){
-            setTimeout(() => {
-                this.$router.push('/cadastro');
-            }, 400);
+        abrirCadastro() {
+            this.$router.push("/cadastro");
         }
-        
     }
-}
+};
 </script>
 
 <style scoped>

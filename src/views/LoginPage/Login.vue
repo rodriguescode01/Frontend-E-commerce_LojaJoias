@@ -69,40 +69,59 @@
 </template>
 
 <script>
+import { useAuthStore } from "@/stores/auth";
+
 export default {
     name: "Login",
+
     data() {
         return {
-            email: "",
-            senha: "",
-            mostrarSenha: false,
-            emailInvalido: false
+        email: "",
+        senha: "",
+        mostrarSenha: false,
+        emailInvalido: false,
+        carregando: false
         };
     },
+
     methods: {
         validarEmail(email) {
-            const regex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
-            return regex.test(email);
+        const regex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+        return regex.test(email);
         },
-        fazerLogin() {
-            if (!this.validarEmail(this.email)) {
-                this.emailInvalido = true;
-                return;
-            }
+
+        async fazerLogin() {
+        if (!this.validarEmail(this.email)) {
+            this.emailInvalido = true;
+            return;
+        }
+
         this.emailInvalido = false;
-        console.log("Tentativa de login com:", this.email);
-        // Aqui você adicionaria sua lógica de autenticação
+        this.carregando = true;
+
+        const auth = useAuthStore();
+
+        try {
+            await auth.login(this.email, this.senha);
+            this.$router.push("/");
+        } catch (error) {
+            alert("E-mail ou senha inválidos");
+        } finally {
+            this.carregando = false;
+        }
         }
     },
+
     watch: {
-        email(novoValor) {
-            if (this.validarEmail(novoValor)) {
-                this.emailInvalido = false;
-            }
+        email(valor) {
+        if (this.validarEmail(valor)) {
+            this.emailInvalido = false;
+        }
         }
     }
 };
 </script>
+
 
 <style scoped>
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css");

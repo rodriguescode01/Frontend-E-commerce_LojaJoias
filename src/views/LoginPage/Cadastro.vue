@@ -44,8 +44,13 @@
             </div>
             </div>
 
-            <button type="submit" class="botao-cadastrar">
-                <i class="bi bi-person-plus-fill"></i> Criar Conta
+            <button 
+                type="submit" 
+                class="botao-cadastrar"
+                :disabled="carregando"
+                >
+                <i class="bi bi-person-plus-fill"></i>
+                {{ carregando ? "Criando conta..." : "Criar Conta" }}
             </button>
         </form>
 
@@ -66,6 +71,9 @@
 </template>
 
 <script>
+import { cadastrarUsuario } from '@/services/api'
+
+
 export default {
     name: "Cadastro",
     data() {
@@ -74,8 +82,9 @@ export default {
             email: "",
             senha: "",
             mostrarSenha: false,
-            emailInvalido: false 
-        };
+            emailInvalido: false,
+            carregando: false
+        }
     },
     methods: {
         
@@ -84,21 +93,42 @@ export default {
             return regex.test(email);
         },
         
-        cadastrar() {
-            // Validamos antes de processar o cadastro
+        async cadastrar() {
+            // valida email
             if (!this.validarEmail(this.email)) {
                 this.emailInvalido = true;
                 alert("Por favor, insira um e-mail válido.");
                 return;
             }
-            
+
             this.emailInvalido = false;
-            console.log("Dados prontos para envio:", {
-                nome: this.nome,
-                email: this.email,
-                senha: this.senha
-            });        
+            this.carregando = true;
+
+            try {
+                await cadastrarUsuario({
+                    nome: this.nome,
+                    email: this.email.toLowerCase(),
+                    senha: this.senha
+                });
+
+                alert("Conta criada com sucesso!");
+                this.$router.push("/login");
+
+            } catch (error) {
+                if (error.response) {
+                    if (error.response.status === 409) {
+                        alert("Este e-mail já está cadastrado.");
+                    } else {
+                        alert("Erro ao criar conta. Tente novamente.");
+                    }
+                } else {
+                    alert("Erro de conexão com o servidor.");
+                }
+            } finally {
+                this.carregando = false;
+            }
         }
+
     },
     watch: {
         // Remove o alerta de erro assim que o usuário começa a corrigir
