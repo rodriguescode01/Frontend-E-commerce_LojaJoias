@@ -1,9 +1,9 @@
 <template>
     <div class="page-enter">
         <Navbar />
-        <Banner />
+        <!--<Banner />
         <Categoria />
-        <!--<ProdutosCarrosel />
+        <ProdutosCarrosel />
         <Beneficios />
         <Footer />-->
     </div>

@@ -22,7 +22,7 @@
         <!-- Menu -->
         <nav class="nav-menu">
             <ul class="menu-desktop">
-            <li class="link"><a href="#">Home</a></li>
+            <li class="link"><a href="#">Início</a></li>
             <li class="link"><a href="#cate">Categorias</a></li>
             <li class="link"><a href="#pro">Produtos</a></li>
             <li class="link"><a href="#con">Contato</a></li>
@@ -34,29 +34,34 @@
 
             <!-- NÃO LOGADO -->
             <template v-if="!auth.logado">
-            <button class="btn-login" @click="abrirLogin">Entrar</button>
+                <button class="btn-login" @click="abrirLogin">Entrar</button>
             <span>|</span>
-            <button class="btn-cadastro" @click="abrirCadastro">Cadastre-se</button>
+                <button class="btn-cadastro" @click="abrirCadastro">Cadastre-se</button>
             </template>
 
             <!-- LOGADO -->
             <template v-else>
-            <div class="usuario-menu">
+                <div class="usuario-menu">
 
-                <span class="minhas-compras">
-                    Minhas Comprar
-                </span>
-                <span>|</span>
-                <span class="usuario-nome" @click="toggleMenu">
-                Olá, {{ auth.usuario.nome }}
-                </span>
+                    <span class="minhas-compras">
+                        Minhas Comprar
+                    </span>
+                    <span>|</span>
+                    <span class="usuario-nome" @click="toggleMenu">
+                    Olá, {{ auth.usuario.nome }}
+                    </span>
 
-                <div v-if="menuAberto" class="dropdown">
-                <button @click="irPerfil">Meu Perfil</button>
-                <button @click="sair">Sair</button>
+                    <div v-if="menuAberto" class="dropdown">
+                        <button @click="irPerfil">Meu Perfil</button>
+                        <button @click="sair">Sair</button>
+                    </div>
                 </div>
-            </div>
             </template>
+
+            <!-- MENU HAMBÚRGUER (MOBILE) -->
+            <button class="btn-hamburger" @click="menuMobileAberto = !menuMobileAberto">
+                <img src="../assets/icons/iconMenu.png" alt="Menu" />
+            </button>
 
             <!-- Carrinho -->
             <button class="btn-carrinho" @click="abrirCarrinho">
@@ -68,6 +73,34 @@
 
         </div>
     </header>
+
+        <!-- MENU MOBILE -->
+        <div class="menu-mobile" :class="{ ativo: menuMobileAberto }">
+
+            <ul class="menu-mobile-links">
+                <li><a href="#" @click="menuMobileAberto = false">Início</a></li>
+                <li><a href="#cate" @click="menuMobileAberto = false">Categorias</a></li>
+                <li><a href="#pro" @click="menuMobileAberto = false">Produtos</a></li>
+                <li><a href="#con" @click="menuMobileAberto = false">Contato</a></li>
+            </ul>
+
+            <div class="menu-mobile-auth">
+
+                <!-- NÃO LOGADO -->
+                <template v-if="!auth.logado">
+                <button @click="abrirLogin">Entrar</button>
+                <button @click="abrirCadastro">Cadastre-se</button>
+                </template>
+
+                <!-- LOGADO -->
+                <template v-else>
+                <span class="mobile-user">Olá, {{ auth.usuario.nome }}</span>
+                <button @click="irPerfil">Meu Perfil</button>
+                <button @click="sair">Sair</button>
+                </template>
+            </div>
+        </div>
+
 </template>
 
 <script>
@@ -88,7 +121,8 @@ export default {
     data() {
         return {
         isScrolled: false,
-        menuAberto: false
+        menuAberto: false,
+        menuMobileAberto: false
         };
     },
 
@@ -135,7 +169,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 
 html {
     scroll-behavior: smooth;
@@ -363,7 +397,14 @@ header .header-logo {
     transition: padding 0.3s ease;
 }
 
-
+/* ESCONDIDO NO DESKTOP */
+.btn-hamburger {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 26px;
+    cursor: pointer;
+}
 
 </style>
 
